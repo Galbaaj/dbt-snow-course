@@ -3,7 +3,6 @@
   ────────────────────────
   Staging model for the TPC-H CUSTOMER source table.
 */
-
 with
 
 source as (
@@ -30,3 +29,6 @@ renamed as (
 )
 
 select * from renamed
+
+
+add {{ config(materialized='table') }}
