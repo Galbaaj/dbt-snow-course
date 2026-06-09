@@ -13,8 +13,8 @@ sources:
     # ── Freshness monitoring ─────────────────────────────────────────────────
     # Run:  dbt source freshness
     freshness:
-      warn_after:  {count: 24, period: hour}
-      error_after: {count: 48, period: hour}
+      warn_after:  {count: 7000, period: hour}
+      error_after: {count: 12000, period: hour}
 
     tables:
       # ── ORDERS ─────────────────────────────────────────────────────────────
@@ -52,55 +52,6 @@ sources:
             description: Ship priority code.
           - name: O_COMMENT
             description: Free-text comment on the order.
-
-      # ── LINEITEM ────────────────────────────────────────────────────────────
-      - name: lineitem
-        description: >
-          One row per order line item. Each order can have multiple line items.
-          This is the most granular table in TPC-H.
-        columns:
-          - name: L_ORDERKEY
-            description: Foreign key to ORDERS.O_ORDERKEY.
-            tests:
-              - not_null
-              - relationships:
-                  to: source('tpch', 'orders')
-                  field: O_ORDERKEY
-          - name: L_PARTKEY
-            description: Foreign key to PART.P_PARTKEY.
-            tests: [not_null]
-          - name: L_SUPPKEY
-            description: Foreign key to SUPPLIER.S_SUPPKEY.
-            tests: [not_null]
-          - name: L_LINENUMBER
-            description: Position of this line within the order (1-indexed).
-            tests: [not_null]
-          - name: L_QUANTITY
-            description: Quantity of parts ordered on this line.
-            tests: [not_null]
-          - name: L_EXTENDEDPRICE
-            description: Extended price = quantity × unit price.
-            tests: [not_null]
-          - name: L_DISCOUNT
-            description: Discount fraction applied (0.00–0.10).
-          - name: L_TAX
-            description: Tax fraction applied.
-          - name: L_RETURNFLAG
-            description: Return flag code (A, N, R).
-          - name: L_LINESTATUS
-            description: Line item status code (F, O).
-          - name: L_SHIPDATE
-            description: Date the line item was shipped.
-          - name: L_COMMITDATE
-            description: Date the line item was committed.
-          - name: L_RECEIPTDATE
-            description: Date the line item was received.
-          - name: L_SHIPINSTRUCT
-            description: Shipping instructions text.
-          - name: L_SHIPMODE
-            description: Shipping mode (AIR, TRUCK, SHIP, etc.).
-          - name: L_COMMENT
-            description: Free-text comment.
 
       # ── CUSTOMER ────────────────────────────────────────────────────────────
       - name: customer

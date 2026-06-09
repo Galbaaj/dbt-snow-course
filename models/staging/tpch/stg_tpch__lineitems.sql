@@ -8,7 +8,7 @@
 with
 
 source as (
-    select * from {{ source('tpch', 'lineitem') }}
+    select * from SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
 ),
 
 renamed as (

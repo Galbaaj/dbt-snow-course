@@ -11,6 +11,7 @@ with
 
 orders as (
     select * from {{ ref('stg_tpch__orders') }}
+    -- place union here
 ),
 
 customers as (

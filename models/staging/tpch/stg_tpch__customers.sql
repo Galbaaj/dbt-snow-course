@@ -7,7 +7,7 @@
 with
 
 source as (
-    select * from {{ source('tpch', 'customer') }}
+    select * from SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER
 ),
 
 renamed as (
@@ -30,3 +30,4 @@ renamed as (
 )
 
 select * from renamed
+-- place update simulation here
