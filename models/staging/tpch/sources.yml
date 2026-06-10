@@ -7,20 +7,21 @@ sources:
       All raw tables live in SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.
       Use this source definition to reference raw data instead of
       hardcoding database/schema names in model SQL.
+
     database: SNOWFLAKE_SAMPLE_DATA
     schema: TPCH_SF1
 
-    # ── Freshness monitoring ─────────────────────────────────────────────────
-    # Run:  dbt source freshness
-    freshness:
-      warn_after:  {count: 24, period: hour}
-      error_after: {count: 48, period: hour}
+    config:
+      freshness:
+        warn_after:  {count: 7000, period: hour}
+        error_after: {count: 12000, period: hour}
 
     tables:
-      # ── ORDERS ─────────────────────────────────────────────────────────────
       - name: orders
         description: One row per customer order. Contains order header information.
-        loaded_at_field: O_ORDERDATE
+        config:
+          loaded_at_field: "O_ORDERDATE::timestamp"
+
         columns:
           - name: O_ORDERKEY
             description: Unique order identifier (primary key).
