@@ -19,7 +19,7 @@ models:
               to: ref('stg_tpch__customers')
               field: customer_id
       - name: order_status_code
-        description: Raw single-character status code from source.
+        description: "{{ doc('order_status') }}"
         tests:
           - not_null
           - accepted_values:
@@ -56,8 +56,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_tpch__orders')
-              field: order_id
+              arguments:
+                to: ref('stg_tpch__orders')
+                field: order_id
       - name: line_number
         description: Position of this line within the order (1-indexed).
         tests: [not_null]
@@ -100,25 +101,46 @@ models:
 
   # ── stg_tpch__customers ──────────────────────────────────────────────────
   - name: stg_tpch__customers
-    description: >
-      Staging model for TPC-H CUSTOMER. One row per customer.
+    description:       Cleaned customer master data from the TPC-H CUSTOMER source table.
+      Each row represents one customer and provides standardized attributes
+      used for enrichment, segmentation, and reporting.
     columns:
       - name: customer_id
-        description: Unique customer identifier (PK).
-        tests: [not_null, unique]
+        description: Unique customer identifier.
+        tests:
+          - not_null
+          - unique
+
       - name: nation_id
-        description: Foreign key to stg_tpch__nations.nation_id.
-        tests: [not_null]
+        description: Foreign key to the nation mapping.
+        tests:
+          - not_null
+
       - name: customer_name
-        description: Customer full name.
-        tests: [not_null]
+        description: Customer name.
+        tests:
+          - not_null
+
       - name: customer_address
         description: Mailing address.
+
       - name: customer_phone
         description: Contact phone number.
+
       - name: account_balance
         description: Current account balance.
+
       - name: market_segment
-        description: Customer's market segment (e.g. AUTOMOBILE, BUILDING).
+        description: Customer market segment.
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - AUTOMOBILE
+                  - BUILDING
+                  - FURNITURE
+                  - HOUSEHOLD
+                  - MACHINERY
+
       - name: customer_comment
         description: Free-text comment from source.

@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: Order-level fact table for reporting and analytics.
+    columns:
+      - name: order_sk
+        description: Generated surrogate key for the order.
+        data_tests:
+          - not_null
+          - unique:
+              config:
+                store_failures: true
+
+      - name: order_id
+        description: Natural order identifier from the source system.
+        data_tests:
+          - not_null
+          - unique
